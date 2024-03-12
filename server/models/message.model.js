@@ -3,12 +3,12 @@ import mongoose from 'mongoose';
 const messageSchema = new mongoose.Schema(
     {
         senderId : {
-            type : mongoose.Schema.Types.objectId,
+            type : mongoose.Schema.Types.ObjectId, // Corrected typo here
             ref : 'User',
             required : true
         },
-        recieverId : {
-            type : mongoose.Schema.Types.objectId,
+        receiverId : { // Corrected typo in the field name
+            type : mongoose.Schema.Types.ObjectId, // Corrected typo here
             ref : 'User',
             required : true
         },
@@ -16,10 +16,11 @@ const messageSchema = new mongoose.Schema(
             type : String,
             required : true
         }
-    },{
+    },
+    {
         timestamps: true,
     }
-)
+);
 
-const Message = mongoose.model('Message',messageSchema)
-export default Message
+const Message = mongoose.model('Message', messageSchema);
+export default Message;
