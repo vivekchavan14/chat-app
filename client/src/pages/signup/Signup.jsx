@@ -1,21 +1,9 @@
-// Signup.jsx
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import GenderCheckBox from './GenderCheckBox';
 import useSignup from '../../hooks/useSignup';
-import { ToastContainer, toast } from 'react-toastify'; // Import ToastContainer and toast from react-toastify
+import { ToastContainer } from 'react-toastify'; // Import ToastContainer from react-toastify
 import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for react-toastify
-
-// Configure the toast notifications
-toast.configure({
-  position: "top-center",
-  autoClose: 3000, // 3 seconds
-  hideProgressBar: false,
-  closeOnClick: true,
-  pauseOnHover: true,
-  draggable: true,
-  progress: undefined,
-});
 
 function Signup() {
   const [inputs, setInputs] = useState({
@@ -79,7 +67,7 @@ function Signup() {
           </div>
         </form>
       </div>
-      <ToastContainer />
+      <ToastContainer /> {/* Render the ToastContainer component */}
     </div>
   );
 }
