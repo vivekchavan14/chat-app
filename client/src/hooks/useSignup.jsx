@@ -1,9 +1,11 @@
 // useSignup.js
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import { useAuthContext } from '../context/AuthContext';
 
 const useSignup = () => {
   const [loading, setLoading] = useState(false);
+  const { setAuthUser } = useAuthContext(); // Destructure setAuthUser from the context
 
   const signup = async ({ fullName, username, password, confirmPassword, gender }) => {
     const success = handleInputErrors({ fullName, username, password, confirmPassword, gender });
@@ -22,7 +24,11 @@ const useSignup = () => {
 
       const data = await res.json();
       console.log(data);
+      // Update authentication state after successful signup
+      setAuthUser(data);
       toast.success('Signup successful!');
+      // Note: You might want to store the token or other necessary authentication data in localStorage
+      localStorage.setItem('chat-user', JSON.stringify(data)); // Store data in localStorage
     } catch (error) {
       console.error(error);
       toast.error('An error occurred. Please try again.');
