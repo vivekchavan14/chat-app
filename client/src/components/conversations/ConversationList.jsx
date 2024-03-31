@@ -7,7 +7,7 @@ function ConversationList() {
   const { loading, conversations } = useGetConversations();
 
   return (
-    <div className='py-2 flex flex-col overflow-auto'>
+    <div className='py-2 flex flex-col overflow-auto'> 
       {conversations.map((conversation, idx) => (
         <Conversation
           key={conversation._id}
@@ -16,6 +16,8 @@ function ConversationList() {
           lastIdx={idx === conversations.length - 1}
         />
       ))}
+
+      {loading? <span className='loading loading-spinner mx-auto'></span> : null}
     </div>
   );
 }
