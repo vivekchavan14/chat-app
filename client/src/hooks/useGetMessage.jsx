@@ -1,38 +1,30 @@
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import useConversation from "../zustand/useConversation";
+import useConversation from "../zustand/useConversation.jsx";
+import toast from "react-hot-toast";
 
-const useGetMessages = () => {
-  const [loading, setLoading] = useState(false);
-  const { messages, setMessages, selectedConversation } = useConversation();
+const useGetMessage = () => {
+    const [loading, setLoading] = useState(false);
+    const { setMessages, selectedConversation } = useConversation();
 
-  useEffect(() => {
-    const getMessages = async () => {
-      setLoading(true);
-      try {
-        const res = await fetch(`/api/message/${selectedConversation._id}`);
-        const data = await res.json();
-        if (data.error) throw new Error(data.error);
+    useEffect(() => {
+        const getMessages = async () => {
+            setLoading(true);
+            try {
+                const res = await fetch(`/api/message/${selectedConversation._id}`);
+                const data = await res.json();
+                if (data.error) throw new Error(data.error);
+                setMessages(data);
+            } catch (error) {
+                toast.error(error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-        // Ensure that messages is an array before updating state
-        if (Array.isArray(data)) {
-          setMessages(data);
-        } else {
-          throw new Error("Messages data is not in the expected format");
-        }
-      } catch (error) {
-        toast.error(error.message); // Display error toast
-      } finally {
-        setLoading(false);
-      }
-    };
+        if (selectedConversation?._id) getMessages();
+    }, [selectedConversation?._id, setMessages]);
 
-    if (selectedConversation?._id) {
-      getMessages();
-    }
-  }, [selectedConversation?._id, setMessages]);
-
-  return { messages, loading };
+    return { loading };
 };
 
-export default useGetMessages;
+export default useGetMessage;
