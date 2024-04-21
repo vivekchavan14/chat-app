@@ -1,35 +1,35 @@
-import React, { useEffect, useRef } from 'react';
-import Message from '../messages/Message.jsx';
-import useGetMessage from '../../hooks/useGetMessage.jsx';
-import MessageSkeleton from '../skeleton/MessageSkeleton';
+import { useEffect, useRef } from "react";
+import useGetMessages from "../../hooks/useGetMessage.jsx";
+import MessageSkeleton from "../skeleton/MessageSkeleton.jsx";
+import Message from "./Message";
+import useListenMessages from "../../hooks/useListenMessages";
 
-function Messages() {
-    const { messages, loading } = useGetMessage();
-    const lastMessageRef = useRef();
+const Messages = () => {
+	const { messages, loading } = useGetMessages();
+	useListenMessages();
+	const lastMessageRef = useRef();
 
-    useEffect(() => {
-        if (lastMessageRef.current) {
-            lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, [messages]);
+	useEffect(() => {
+		setTimeout(() => {
+			lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+		}, 100);
+	}, [messages]);
 
-    return (
-        <div className='px-4 flex-1 overflow-auto'>
-            {!loading ? (
-                messages && messages.length > 0 ? ( // Add a guard clause here
-                    messages.map((message, index) => (
-                        <div key={message._id} ref={lastMessageRef}>
-                            <Message message={message} />
-                        </div>
-                    ))
-                ) : (
-                    <p className='text-center'>Send a message to start the conversation</p>
-                )
-            ) : (
-                [...Array(3)].map((_, idx) => <MessageSkeleton key={idx} />)
-            )}
-        </div>
-    );
-}
+	return (
+		<div className='px-4 flex-1 overflow-auto'>
+			{!loading &&
+				messages.length > 0 &&
+				messages.map((message) => (
+					<div key={message._id} ref={lastMessageRef}>
+						<Message message={message} />
+					</div>
+				))}
 
+			{loading && [...Array(3)].map((_, idx) => <MessageSkeleton key={idx} />)}
+			{!loading && messages.length === 0 && (
+				<p className='text-center'>Send a message to start the conversation</p>
+			)}
+		</div>
+	);
+};
 export default Messages;
