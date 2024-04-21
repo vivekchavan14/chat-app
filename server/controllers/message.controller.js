@@ -57,9 +57,13 @@ export const getMessage = async (req, res) => {
 			participants: { $all: [senderId, userToChatId] },
 		}).populate("messages"); // NOT REFERENCE BUT ACTUAL MESSAGES
 
+		console.log("Fetched conversation:", conversation); // Debugging log
+
 		if (!conversation) return res.status(200).json([]);
 
 		const messages = conversation.messages;
+
+		console.log("Populated messages:", messages); // Debugging log
 
 		res.status(200).json(messages);
 	} catch (error) {
